@@ -1,6 +1,11 @@
+import matplotlib
+matplotlib.use('TkAgg')
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
 import math
 import os
 from datetime import datetime
+import tkinter as Tk
 from tkinter import filedialog
 
 ioForm = "%H:%M:%S %d.%m.%Y"
@@ -39,6 +44,13 @@ def formatTimeOL(secs):  # one line
     time_str = str(math.floor(secs / (24.0 * 60.0 * 60.0))) + " days and "
     time_str += str(round((secs % (24 * 60 * 60)) / (60 * 60), 2)) + " hours"
     return time_str
+
+
+def makeBarGraph():
+    root = Tk.Tk()
+    for root, dirs, filenames in os.walk(dirname):
+        for f in filenames:
+            totalTime = getSecs(os.path.join(root, f))
 
 
 if __name__ == "__main__":
