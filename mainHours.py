@@ -1,7 +1,9 @@
 import matplotlib
-matplotlib.use('TkAgg')
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.figure import Figure
+import numpy as np
+#matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
+#from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+#from matplotlib.figure import Figure
 import math
 import os
 from datetime import datetime
@@ -48,6 +50,7 @@ def formatTimeOL(secs):  # one line
 
 def makeBarGraph():
     root = Tk.Tk()
+
     for root, dirs, filenames in os.walk(dirname):
         for f in filenames:
             totalTime = getSecs(os.path.join(root, f))
@@ -58,10 +61,20 @@ if __name__ == "__main__":
     print("Select the directory that the time files are located in.")
     dirname = filedialog.askdirectory()
     print("Directory: " + dirname)
+    names = []
+    posit = []
+    times = []
     for root, dirs, filenames in os.walk(dirname):
         for f in filenames:
-            totalTime = getSecs(os.path.join(root, f))
-            print("Total Secs: " + str(totalTime))
-            print(f.split(".")[0] + ": " + formatTimeOL(totalTime))
-            print(f.split(".")[0] + ":\n" + formatTime(totalTime))
-            print("\n")
+            names += [f[:-4]]
+            times += [getSecs(os.path.join(root, f))/60/60]
+            #print("Total Secs: " + str(totalTime))
+            #print(f.split(".")[0] + ": " + formatTimeOL(totalTime))
+            #print(f.split(".")[0] + ":\n" + formatTime(totalTime))
+            #print("\n")
+    xposi = np.arange(len(names))
+    plt.bar(xposi,times, align='center',alpha=0.5)
+    plt.xticks(xposi,names)
+    plt.ylabel('Time (in hours)')
+    plt.title('Timeclock Times!')
+    plt.show()
